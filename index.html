@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Grayson.GFX | Graphic Design and Front-End Development</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Manrope:wght@400;500;700&family=Pinyon+Script&family=Syne:wght@800&display=swap">
+
+  <style>
+
+    :root {
+      --bg: #f6f9fb;
+      --fg: #0c1e2e;
+      --mute: #53667a;
+      --line: #d8e2ea;
+      --card: #fff;
+      --ac: #124c7c;
+      --g: #2a9662;
+      --dg: #256252;
+      --t: #287c98;
+      --on: #fff;
+
+      box-sizing: border-box;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #08131d; --fg: #eaf3f8; --mute: #8fa5b6; --line: #173041;
+        --card: #0e1f2d; --ac: #4a9be0; --g: #3fc186; --dg: #3fc186;
+        --t: #4cb4d3; --on: #06121b;
+      }
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #08131d; --fg: #eaf3f8; --mute: #8fa5b6; --line: #173041;
+      --card: #0e1f2d; --ac: #4a9be0; --g: #3fc186; --dg: #3fc186;
+      --t: #4cb4d3; --on: #06121b;
+    }
+
+    *  { box-sizing: border-box; }
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: calc(72px + env(safe-area-inset-top, 0px));
+    }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font: 400 1rem/1.65 Manrope, system-ui, sans-serif;
+    }
+    a { color: inherit; text-decoration: none; }
+    :focus-visible { outline: 2px solid var(--g); outline-offset: 3px; }
+
+    h1, h2, h3 {
+      font-family: 'Bricolage Grotesque', Manrope, sans-serif;
+      line-height: 1.05;
+      margin: 0;
+      letter-spacing: -.02em;
+    }
+    h2 {
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      font-weight: 800;
+      max-width: 18ch;
+      margin-bottom: 18px;
+    }
+
+    section { padding: 56px 0; }
+    .wrap   { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+    .sub    { color: var(--mute); max-width: 58ch; margin: 0 0 40px; }
+    .fine   { color: var(--mute); font-size: .85rem; margin-top: 18px; max-width: 82ch; }
+    .row    { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    .now, .stat b { font-variant-numeric: tabular-nums; }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 22px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: .92rem;
+      border: 1px solid var(--line);
+    }
+    .btn.p {
+      background: linear-gradient(90deg, var(--ac), var(--g));
+      color: var(--on);
+      border: 0;
+    }
+
+    nav {
+      position: sticky;
+      top: env(safe-area-inset-top, 0px);
+      z-index: 5;
+      background: color-mix(in srgb, var(--bg) 88%, transparent);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    nav .wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+      gap: 16px;
+    }
+    nav ul {
+      display: flex;
+      gap: 26px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      font-size: .92rem;
+      color: var(--mute);
+    }
+    nav ul a:hover { color: var(--fg); }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font: 800 1.15rem 'Bricolage Grotesque', sans-serif;
+    }
+    .brand img {
+      height: 40px;
+      width: auto;
+      border-radius: 8px;
+      background: #fff;
+      padding: 3px;
+    }
+    .brand b { color: var(--dg); }
+    .brand i { font-style: normal; color: var(--ac); }
+
+    .hero { padding: clamp(40px, 7vw, 88px) 0 64px; }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: clamp(32px, 5vw, 64px);
+      align-items: stretch;
+    }
+
+    .hero-copy { display: flex; flex-direction: column; justify-content: center; }
+    .k { color: var(--mute); }
+    .hero .k { margin: 0 0 30px; }
+
+    .hero h1 {
+      margin: 0;
+      font-family: Syne, 'Bricolage Grotesque', sans-serif;
+      font-size: clamp(2.2rem, 4.6vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.25;
+      letter-spacing: -.01em;
+      animation: rise .9s cubic-bezier(.2, .7, .2, 1) both;
+    }
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(90deg, var(--ac), var(--g));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .sc {
+      font-family: 'Pinyon Script', 'Snell Roundhand', cursive;
+      font-weight: 400;
+      font-size: 1.95em;
+      line-height: 0;
+      letter-spacing: 0;
+      padding-right: .04em;
+    }
+    .sc.j { margin: 0 .02em 0 .06em; }
+
+    .hero .l {
+      max-width: 46ch;
+      margin: 24px 0 30px;
+      color: var(--mute);
+      font-size: 1.1rem;
+    }
+
+    .stage {
+      position: relative;
+      min-height: 420px;
+      display: grid;
+      place-items: center;
+      border-radius: 32px;
+      border: 1px solid var(--line);
+      overflow: hidden;
+
+      background:
+        radial-gradient(circle at 78% 18%, rgba(42,150,98,.20), transparent 55%),
+        radial-gradient(circle at 15% 85%, rgba(18,76,124,.16), transparent 55%),
+        #f4f9fb;
+    }
+
+    .stage::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(12,30,46,.16) 1px, transparent 1.4px);
+      background-size: 22px 22px;
+      -webkit-mask-image: radial-gradient(circle at center, #000 25%, transparent 78%);
+      mask-image: radial-gradient(circle at center, #000 25%, transparent 78%);
+    }
+
+    .stage::after {
+      content: "";
+      position: absolute;
+      width: min(74%, 380px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      border: 1px dashed rgba(18,76,124,.28);
+    }
+    .stage img {
+      position: relative;
+      z-index: 1;
+      width: min(52%, 270px);
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 18px 24px rgba(18,76,124,.18));
+    }
+    .stage .tag-l, .stage .tag-r {
+      position: absolute;
+      bottom: 20px;
+      z-index: 1;
+      font: 700 .72rem/1 Manrope, sans-serif;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: #53667a;
+    }
+    .stage .tag-l { left: 24px; }
+    .stage .tag-r { right: 24px; color: #256252; }
+
+    .mq {
+      overflow: hidden;
+      border-block: 1px solid var(--line);
+      padding: 16px 0;
+      white-space: nowrap;
+    }
+    .mq div {
+      display: inline-block;
+      animation: slide 30s linear infinite;
+      font: 800 1.4rem 'Bricolage Grotesque', sans-serif;
+      color: var(--mute);
+    }
+    .mq b { color: var(--g); margin: 0 22px; }
+
+    .plans {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 18px;
+    }
+    .plan {
+      border: 1px solid var(--line);
+      background: var(--card);
+      border-radius: 22px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .plan:not(.t)::before { content: ""; display: block; height: 26px; margin-bottom: 12px; }
+    .plan h3 { font-size: 1.5rem; }
+    .plan .d { color: var(--mute); font-size: .92rem; margin: 6px 0 18px; }
+    .plan ul {
+      list-style: none;
+      margin: 20px 0 0;
+      padding: 20px 0 0;
+      border-top: 1px solid var(--line);
+      display: grid;
+      gap: 8px;
+      color: var(--mute);
+      font-size: .94rem;
+    }
+    .now {
+      font: 800 2.4rem 'Bricolage Grotesque', sans-serif;
+      color: var(--ac);
+      line-height: 1.1;
+    }
+    .tag {
+      align-self: flex-start;
+      height: 26px;
+      line-height: 18px;
+      margin-bottom: 12px;
+      background: var(--g);
+      color: var(--on);
+      font-weight: 700;
+      font-size: .78rem;
+      padding: 4px 12px;
+      border-radius: 999px;
+    }
+    .tag.r { background: var(--ac); }
+
+    .incl { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 18px; }
+    .box {
+      border: 1px solid var(--line);
+      background: var(--card);
+      border-radius: 22px;
+      padding: 28px;
+    }
+    .box h3 { font-size: 1.25rem; margin-bottom: 14px; }
+    .box ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      color: var(--mute);
+      display: grid;
+      gap: 8px;
+      font-size: .94rem;
+    }
+    .box li b { color: var(--fg); }
+
+    .about {
+      display: grid;
+      grid-template-columns: 260px 1.2fr 1fr;
+      gap: 44px;
+      align-items: start;
+    }
+    .photo {
+      aspect-ratio: 1;
+      border-radius: 24px;
+      border: 2px dashed var(--line);
+      display: grid;
+      place-items: center;
+      color: var(--mute);
+      font-size: .85rem;
+      text-align: center;
+      padding: 16px;
+      background: var(--card);
+    }
+    .photo { position: relative; overflow: hidden; }
+    .photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+    .photo:has(img) { border-style: solid; border-width: 1px; padding: 0; }
+
+    .note {
+      border-left: 3px solid var(--g);
+      padding: 4px 0 4px 16px;
+      margin: 0 0 24px;
+      color: var(--mute);
+      font-size: .94rem;
+      max-width: 58ch;
+    }
+    .note b { display: block; color: var(--fg); margin-bottom: 4px; }
+
+    .stats { display: grid; gap: 14px; }
+    .stat {
+      border: 1px solid var(--line);
+      background: var(--card);
+      border-radius: 18px;
+      padding: 20px;
+    }
+    .stat b {
+      display: block;
+      font: 800 2rem 'Bricolage Grotesque', sans-serif;
+      color: var(--g);
+    }
+    .stat span { color: var(--mute); font-size: .9rem; }
+
+    .reviews { display: grid; gap: 14px; }
+    .rv-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 0 4px;
+      font-weight: 700;
+    }
+    .rv-total { color: var(--mute); font-size: .85rem; font-weight: 500; }
+
+    .rv-list { display: grid; gap: 14px; align-content: start; }
+
+    .tcard {
+      border: 1px solid var(--line);
+      background: var(--card);
+      border-radius: 18px;
+      padding: 20px;
+      display: grid;
+      gap: 10px;
+    }
+    .tcard.min { padding: 14px 20px; gap: 6px; }
+    .tcard[hidden] { display: none; }
+    .tcard .top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .stars {
+      --p: 100%;
+      font-size: 1.05rem;
+      line-height: 1;
+      letter-spacing: 2px;
+      background: linear-gradient(90deg, #e8a317 var(--p), color-mix(in srgb, var(--mute) 30%, transparent) var(--p));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .pct { font: 800 1rem 'Bricolage Grotesque', sans-serif; color: var(--g); font-variant-numeric: tabular-nums; }
+    .tcard .who { font-weight: 700; letter-spacing: .06em; }
+    .tcard p { margin: 0; color: var(--mute); font-size: .92rem; }
+
+    .rv-actions { display: flex; gap: 12px; }
+    .rv-actions[hidden], .rv-toggle[hidden] { display: none; }
+    .rv-toggle { flex: 1; text-align: center; background: var(--card); color: var(--fg); cursor: pointer; font-family: inherit; }
+    .rv-toggle:hover { border-color: var(--g); }
+
+    .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 26px; }
+    .tabs button {
+      font: inherit;
+      font-weight: 700;
+      font-size: .88rem;
+      color: var(--mute);
+      background: none;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 9px 18px;
+      cursor: pointer;
+    }
+    .tabs button[aria-pressed="true"] {
+      background: var(--ac);
+      color: var(--on);
+      border-color: var(--ac);
+    }
+
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .tile {
+      aspect-ratio: 4 / 5;
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      position: relative;
+      overflow: hidden;
+      background: var(--card);
+    }
+    .tile::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 10%, var(--c), transparent 65%);
+      opacity: .3;
+    }
+    .tile > img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .tile:has(> img)::before { display: none; }
+    .tile:has(> img)::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 45%, rgba(8,19,29,.82));
+    }
+    .tile > :not(img) { position: relative; z-index: 1; }
+    .tile:has(> img) h3 { color: #fff; }
+    .tile:has(> img) p  { color: rgba(255,255,255,.85); }
+    .tile h3 { font-size: 1.25rem; }
+    .tile p  { margin: 4px 0 0; color: var(--mute); font-size: .88rem; }
+    .tile[hidden] { display: none; }
+
+    .more {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px 24px;
+      margin-top: 32px;
+      padding: 22px 28px;
+      border: 1px solid var(--line);
+      background: var(--card);
+      border-radius: 22px;
+    }
+    .more p { margin: 0; font: 800 1.25rem 'Bricolage Grotesque', sans-serif; letter-spacing: -.02em; }
+
+    .exp { border-top: 1px solid var(--line); }
+    .job {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 32px;
+      padding: 30px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .job time { color: var(--mute); font-size: .9rem; }
+    .job h3   { font-size: 1.45rem; margin-bottom: 8px; }
+    .job p    { margin: 0; color: var(--mute); max-width: 64ch; }
+
+    .big {
+      display: inline-block;
+      font: 800 clamp(1.3rem, 4vw, 2.5rem) 'Bricolage Grotesque', sans-serif;
+      border-bottom: 3px solid var(--g);
+      margin: 6px 0 30px;
+      word-break: break-all;
+    }
+    .soc  { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 34px; }
+    .meta { display: flex; gap: 48px; flex-wrap: wrap; color: var(--mute); }
+    .meta b { display: block; color: var(--fg); }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 28px 0;
+      color: var(--mute);
+      font-size: .88rem;
+    }
+    footer .wrap {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    @keyframes rise  { from { opacity: 0; transform: translateY(28px); } }
+    @keyframes slide { to   { transform: translateX(-50%); } }
+
+    .js .rv {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity .7s ease, transform .7s cubic-bezier(.2, .7, .2, 1);
+    }
+    .js .rv.in { opacity: 1; transform: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; scroll-behavior: auto; }
+      .js .rv { opacity: 1; transform: none; transition: none; }
+    }
+
+    @media (max-width: 900px) {
+      nav ul { display: none; }
+
+      .hero-grid, .about, .job, .incl { grid-template-columns: 1fr; gap: 24px; }
+      .hero-grid { gap: 36px; }
+      .stage { min-height: 340px; }
+      .photo     { max-width: 260px; }
+      .grid      { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 520px) {
+      .stage { min-height: 280px; border-radius: 26px; }
+      .grid   { grid-template-columns: 1fr; }
+      section { padding: 44px 0; }
+    }
+  </style>
+
+  <script>document.documentElement.classList.add("js")</script>
+</head>
+
+<body>
+
+  <nav>
+    <div class="wrap">
+      <a class="brand" href="#top">
+        <img alt="Grayson.GFX logo mark" src="assets/logo.png">
+        <span><b>Grayson</b><i>.GFX</i></span>
+      </a>
+      <ul>
+        <li><a href="#rates">Rates</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <a class="btn p" href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <header class="hero" id="top">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="k">Taguig, Philippines. Graphic design and front-end development.</p>
+        <h1>
+          <span class="sc">Y</span>our next pro<span class="sc j">j</span>ect
+          <em><span class="sc">s</span>tarts <span class="sc">h</span>ere</em>
+        </h1>
+        <p class="l">Graphic designer and front-end developer, designing brands and interfaces and building them into working front ends.</p>
+        <div class="row">
+          <a class="btn p" href="#rates">See my rates</a>
+          <a class="btn" href="#work">View work</a>
+        </div>
+      </div>
+
+      <div class="stage">
+        <img alt="Grayson.GFX logo" src="assets/logo.png">
+        <span class="tag-l">Design</span>
+        <span class="tag-r">Code</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="mq" aria-hidden="true">
+    <div>
+      Brand Identity<b>✦</b>UI/UX<b>✦</b>Front-End<b>✦</b>Web Design<b>✦</b>Social Media<b>✦</b>Print<b>✦</b>
+      Brand Identity<b>✦</b>UI/UX<b>✦</b>Front-End<b>✦</b>Web Design<b>✦</b>Social Media<b>✦</b>Print<b>✦</b>
+    </div>
+  </div>
+
+  <section id="rates">
+    <div class="wrap">
+      <h2>Packages and rates.</h2>
+      <p class="sub">Clear pricing for students and small projects. Coding, functionality and UI/UX for web and app builds, using JavaScript, HTML, PHP and more. Prices are in Philippine pesos.</p>
+
+      <div class="plans">
+        <div class="plan">
+          <h3>Basic</h3>
+          <p class="d">Essential features, cleanly built and ready to use.</p>
+          <div class="now" data-count="6999" data-prefix="₱">₱6,999</div>
+          <ul>
+            <li>2 to 4 screens</li>
+            <li>Simple features and local storage</li>
+            <li>Basic UI/UX layout</li>
+            <li>Graphics supplied by you</li>
+          </ul>
+        </div>
+
+        <div class="plan t">
+          <span class="tag">Most popular</span>
+          <h3>Basic+</h3>
+          <p class="d">Everything in Basic, with custom-designed graphics and assets.</p>
+          <div class="now" data-count="11999" data-prefix="₱">₱11,999</div>
+          <ul>
+            <li>Everything in Basic</li>
+            <li>Custom-designed icons and assets</li>
+            <li>Polished UI/UX and visual style</li>
+            <li>Graphics integrated into the app</li>
+          </ul>
+        </div>
+
+        <div class="plan t">
+          <span class="tag r">Recommended</span>
+          <h3>Standard</h3>
+          <p class="d">For capstones and small businesses that need more features.</p>
+          <div class="now" data-count="19999" data-prefix="₱">₱19,999</div>
+          <ul>
+            <li>Everything in Basic+</li>
+            <li>5 to 8 screens</li>
+            <li>Login and database</li>
+            <li>API integration</li>
+          </ul>
+        </div>
+
+        <div class="plan">
+          <h3>Advanced</h3>
+          <p class="d">The full package, launched and hosted for you.</p>
+          <div class="now" data-count="89999" data-prefix="₱">₱89,999</div>
+          <ul>
+            <li>Everything in Standard</li>
+            <li>9 or more screens</li>
+            <li>Custom features and admin panel</li>
+            <li>Push notifications</li>
+            <li>Hosting and store publishing included</li>
+            <li>Cloud backend setup (such as Firebase Blaze) with budget alerts</li>
+            <li>First-year Google Play and App Store fees covered for app projects</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="incl">
+        <div class="box">
+          <h3>How it works</h3>
+          <ul>
+            <li><b>Meeting first:</b> a Zoom or Google Meet call is required before we start, for quality and smooth communication. You schedule it and create the link.</li>
+            <li><b>Payment:</b> 30% downpayment, 70% balance on delivery. The balance can be paid in installments if you prefer.</li>
+            <li><b>Revisions:</b> 5 included, extra revisions ₱200 each.</li>
+            <li><b>Graphics:</b> Basic uses graphics you supply. Basic+ and up include custom-designed graphics.</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h3>Store publishing fees (apps)</h3>
+          <ul>
+            <li><b>Google Play:</b> $25 one-time registration</li>
+            <li><b>Apple App Store:</b> $99 per year</li>
+            <li><b>Year one for both:</b> $124, then $99 per year</li>
+            <li>Fees are paid directly to Apple and Google under your own developer account. Advanced covers year one. Renewals and Firebase usage charges beyond the free quota are billed to you.</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="fine">Each price covers one platform, such as a website or an Android app. Extra platforms, like an iOS version for the App Store, are quoted separately. For apps on Google Play, new personal developer accounts must run a closed test with at least 12 testers for 14 days before going live, so plan for about two extra weeks.</p>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap about">
+      <div class="photo">Your photo goes here<img src="assets/photo.jpg" alt="Portrait of Grayson" loading="lazy" onerror="this.remove()"></div>
+
+      <div>
+        <h2>Know the creator.</h2>
+        <p class="sub" style="margin-bottom:16px">Six years of freelance work under Grayson.GFX across graphic design, UI/UX, front-end development and content creation.</p>
+        <p class="sub">Studied Web and Mobile Development at Pangasinan State University, so every design is made with the build in mind. Now handling brand identity, guidelines, social media and print for a company.</p>
+        <div class="note"><b>How projects are built</b>Around 50% of the front-end code is vibe coded. The design, ideas, selected code, API integration, Firestore setup and hosting are done by myself.</div>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><b data-count="6" data-suffix=" yrs">6 yrs</b><span>Freelance design practice</span></div>
+        <div class="stat"><b data-count="50" data-suffix="+">50+</b><span>Clients served</span></div>
+        <div class="stat"><b id="sat" data-count="0" data-dec="1" data-suffix="%">0.0%</b><span>Client satisfaction</span></div>
+        <div class="reviews" id="reviews">
+          <div class="rv-head"><span>Client ratings</span><span class="rv-total"></span></div>
+          <div class="rv-list" id="rv-list"></div>
+          <div class="rv-actions" id="rv-actions">
+            <button class="btn rv-toggle" id="rv-more" type="button" aria-controls="rv-list">Show more</button>
+            <button class="btn rv-toggle" id="rv-all" type="button" aria-controls="rv-list">Show all</button>
+            <button class="btn rv-toggle" id="rv-less" type="button" aria-controls="rv-list">Show less</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="wrap">
+      <h2>Selected work.</h2>
+      <p class="sub">Projects across identity, interface and content.</p>
+
+      <div class="tabs" role="group" aria-label="Filter work">
+        <button aria-pressed="true"  data-f="all">All</button>
+        <button aria-pressed="false" data-f="brand">Brand identity</button>
+        <button aria-pressed="false" data-f="ui">UI/UX</button>
+        <button aria-pressed="false" data-f="social">Social and print</button>
+      </div>
+
+      <div class="grid">
+        <article class="tile" data-c="brand"  style="--c:#124c7c"><img src="assets/work-k3b-diner.jpg" alt="K3B Diner identity" loading="lazy" onerror="this.remove()"><h3>K3B Diner identity</h3><p>Logo redesign and brand guidelines</p></article>
+        <article class="tile" data-c="ui"     style="--c:#287c98"><img src="assets/work-pca-services.jpg" alt="PCA Services" loading="lazy" onerror="this.remove()"><h3>PCA Services</h3><p>Web app for improved service access</p></article>
+        <article class="tile" data-c="ui"     style="--c:#2a9662"><img src="assets/work-ojt-tracking.jpg" alt="OJT Tracking" loading="lazy" onerror="this.remove()"><h3>OJT Tracking</h3><p>Web app for tracking on-the-job training</p></article>
+        <article class="tile" data-c="ui"     style="--c:#256252"><img src="assets/work-luckys-choice.jpg" alt="Lucky's Choice website" loading="lazy" onerror="this.remove()"><h3>Lucky's Choice website</h3><p>Single-page scrolling site</p></article>
+        <article class="tile" data-c="brand"  style="--c:#2a9662"><img src="assets/work-stationery.jpg" alt="Company stationery" loading="lazy" onerror="this.remove()"><h3>Company stationery</h3><p>Letterheads, IDs and templates</p></article>
+        <article class="tile" data-c="social" style="--c:#124c7c"><img src="assets/work-social-kits.jpg" alt="Social media kits" loading="lazy" onerror="this.remove()"><h3>Social media kits</h3><p>Posts, carousels and print pieces</p></article>
+      </div>
+
+      <div class="more">
+        <p>View my portfolio to see more.</p>
+        <a class="btn p" href="https://drive.google.com/file/d/1eqR3qM0lUh6WNAPvSzXyD1u3m6D4QU54/view?usp=drive_link" target="_blank" rel="noopener">View my portfolio</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="wrap">
+      <h2>The work behind the work.</h2>
+      <div class="exp" style="margin-top:32px">
+        <div class="job">
+          <time>Present<br>Kim3Bee Lucky's Food Hauz<br>Mandaluyong City, PH</time>
+          <div>
+            <h3>Graphic Artist</h3>
+            <p>Owns the visual side of the company: brand identity, guidelines, letterheads, IDs, social media posts, delivery-platform banners and menu photos, print work and Microsoft Office documents.</p>
+          </div>
+        </div>
+        <div class="job">
+          <time>486 Hours<br>Philippine Coconut Authority<br>Quezon City, PH</time>
+          <div>
+            <h3>Intern</h3>
+            <p>Supported the Office of the Administrator through web development, graphic and multimedia design, and IT assistance. Built the PCA Services web app with Firebase and Vercel and produced newsletters, brochures, social graphics and event videos.</p>
+          </div>
+        </div>
+        <div class="job">
+          <time>6 Years<br>Freelance</time>
+          <div>
+            <h3>Founder, Grayson.GFX</h3>
+            <p>Independent studio delivering graphic design, UI/UX, front-end development and content creation for small businesses and personal brands.</p>
+          </div>
+        </div>
+        <div class="job">
+          <time>College Years<br>Society of Future I.T. Innovators<br>Lingayen, PH</time>
+          <div>
+            <h3>Multimedia Director</h3>
+            <p>Led multimedia for the Society of Future IT Innovators and served as Assistant Director for Networking and Cybersecurity.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <h2>Get in touch.</h2>
+      <p class="sub" style="margin-bottom:8px">For brand identity, interface design, websites and apps.</p>
+      <a class="big" href="mailto:gianfranco.clrxs@gmail.com">gianfranco.clrxs@gmail.com</a>
+
+      <div class="soc">
+        <a class="btn" href="https://www.facebook.com/dick.grayson05">Facebook</a>
+        <a class="btn" href="https://www.instagram.com/gianxxsz/">Instagram</a>
+        <a class="btn" href="https://www.instagram.com/grayson.gfx/">Instagram Business</a>
+        <a class="btn" href="https://www.linkedin.com/in/gianfrancocaoile">LinkedIn</a>
+        <a class="btn" href="https://www.behance.net/gianfranco05">Behance</a>
+      </div>
+
+      <div class="meta">
+        <div><b>Location</b>Taguig City, Philippines</div>
+        <div><b>Availability</b>Open for freelance projects</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <span>© Grayson.GFX. Live with no regrets.</span>
+      <a href="#top">Back to top</a>
+    </div>
+  </footer>
+
+  <script src="ratings.js?v=1"></script>
+  <script>
+
+    document.querySelectorAll('.tabs button').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var filter = btn.dataset.f;
+
+        document.querySelectorAll('.tabs button').forEach(function (b) {
+          b.setAttribute('aria-pressed', b === btn);
+        });
+        document.querySelectorAll('.tile').forEach(function (tile) {
+          tile.hidden = !(filter === 'all' || tile.dataset.c === filter);
+        });
+      });
+    });
+
+    (function () {
+      var box = document.getElementById('reviews');
+      if (!box) return;
+      var FIRST = 3, MORE = 10;
+      var list = document.getElementById('rv-list');
+      var data = (window.RATINGS || []).map(function (r) {
+        return { name: r.name, text: r.text, rating: Math.min(5, Math.max(0, parseFloat(r.rating) || 0)) };
+      });
+      if (!window.RATINGS) console.error('ratings.js did not load or has a syntax error (check commas between entries).');
+      function esc(s) {
+        return String(s).replace(/[&<>"]/g, function (c) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+        });
+      }
+      list.innerHTML = data.map(function (r) {
+        return '<div class="tcard' + (r.text ? '' : ' min') + '" data-rating="' + r.rating + '">' +
+          '<div class="top"><span class="stars" role="img">\u2605\u2605\u2605\u2605\u2605</span><span class="pct"></span></div>' +
+          '<div class="who">' + esc(r.name) + '</div>' +
+          (r.text ? '<p>' + esc(r.text) + '</p>' : '') +
+          '</div>';
+      }).join('');
+      var cards = Array.prototype.slice.call(list.querySelectorAll('.tcard'));
+      var actions = document.getElementById('rv-actions');
+      var btnMore = document.getElementById('rv-more');
+      var btnAll = document.getElementById('rv-all');
+      var btnLess = document.getElementById('rv-less');
+      var total = box.querySelector('.rv-total');
+      var sat = document.getElementById('sat');
+
+      var sum = 0;
+      cards.forEach(function (card) {
+        var rating = +card.dataset.rating;
+        var pct = Math.round(rating / 5 * 100);
+        sum += pct;
+        card.querySelector('.stars').style.setProperty('--p', pct + '%');
+        card.querySelector('.stars').setAttribute('aria-label', rating + ' out of 5 stars');
+        card.querySelector('.pct').textContent = pct + '%';
+      });
+
+      var avg = cards.length ? Math.round(sum / cards.length * 10) / 10 : 0;
+      sat.dataset.count = avg;
+      sat.textContent = avg.toFixed(1) + '%';
+      total.textContent = cards.length + (cards.length === 1 ? ' rating' : ' ratings');
+
+      // level 0 = first 3, level 1 = first 10, level 2 = everything
+      function render(level) {
+        var limit = level === 0 ? FIRST : level === 1 ? MORE : cards.length;
+        cards.forEach(function (card, i) { card.hidden = i >= limit; });
+        btnMore.hidden = !(level === 0 && cards.length > FIRST);
+        btnAll.hidden  = !(level === 1 && cards.length > MORE);
+        btnLess.hidden = level === 0;
+        actions.hidden = btnMore.hidden && btnAll.hidden && btnLess.hidden;
+      }
+      btnMore.addEventListener('click', function () { render(1); });
+      btnAll.addEventListener('click', function () { render(2); });
+      btnLess.addEventListener('click', function () {
+        render(0);
+        box.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      });
+      render(0);
+    })();
+
+    (function () {
+      var reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var hasIO   = 'IntersectionObserver' in window;
+
+      var revealEls = document.querySelectorAll(
+        'section h2,.sub,.plan,.box,.stat,.reviews,.tile,.job,.photo,.fine,.tabs,.big,.soc,.meta'
+      );
+
+      revealEls.forEach(function (el) {
+        el.classList.add('rv');
+        var index = Array.prototype.indexOf.call(el.parentNode.children, el);
+        el.style.transitionDelay = Math.min(index, 5) * 70 + 'ms';
+      });
+
+      function countUp(el) {
+        var target = +el.dataset.count;
+        var prefix = el.dataset.prefix || '';
+        var suffix = el.dataset.suffix || '';
+        var decimals = +el.dataset.dec || 0;
+        var duration = 1100;
+        var start = null;
+
+        function frame(ts) {
+          if (!start) start = ts;
+          var p = Math.min((ts - start) / duration, 1);
+          var eased = 1 - Math.pow(1 - p, 3);
+          var value = target * eased;
+
+          el.textContent = prefix +
+            (decimals ? value.toFixed(decimals) : Math.round(value).toLocaleString('en-US')) +
+            suffix;
+
+          if (p < 1) requestAnimationFrame(frame);
+        }
+        requestAnimationFrame(frame);
+      }
+
+      if (reduced || !hasIO) {
+        revealEls.forEach(function (el) { el.classList.add('in'); });
+        return;
+      }
+
+      document.querySelectorAll('[data-count]').forEach(function (el) {
+        el.textContent = (el.dataset.prefix || '') + '0' + (el.dataset.suffix || '');
+      });
+
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+
+          entry.target.classList.add('in');
+          if (entry.target.hasAttribute('data-count')) countUp(entry.target);
+          if (entry.target.querySelectorAll) {
+            entry.target.querySelectorAll('[data-count]').forEach(countUp);
+          }
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: .15 });
+
+      revealEls.forEach(function (el) { observer.observe(el); });
+
+      document.querySelectorAll('[data-count]').forEach(function (el) {
+        if (!el.closest('.plan,.stat')) observer.observe(el);
+      });
+    })();
+  </script>
+</body>
+</html>
