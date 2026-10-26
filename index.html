@@ -509,6 +509,17 @@
       gap: 12px;
     }
 
+    .tile{cursor:pointer}
+    .tile.pg > img{object-position:top}
+    .lb{position:fixed;inset:0;z-index:20;background:rgba(4,10,16,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:calc(56px + env(safe-area-inset-top,0px)) 12px calc(20px + env(safe-area-inset-bottom,0px))}
+    .lb[hidden]{display:none}
+    .lb img{max-width:100%;max-height:calc(100% - 52px);object-fit:contain;border-radius:8px}
+    .lb .cap{color:#fff;text-align:center;font-weight:700;font-size:.92rem}
+    .lb .cap span{display:block;color:rgba(255,255,255,.7);font-weight:400}
+    .lb button{position:absolute;background:rgba(255,255,255,.14);color:#fff;border:0;border-radius:999px;width:44px;height:44px;font-size:1.3rem;cursor:pointer}
+    .lb .x{top:calc(8px + env(safe-area-inset-top,0px));right:12px}
+    .lb .pv{left:10px;top:50%}.lb .nx{right:10px;top:50%}
+
     @keyframes rise  { from { opacity: 0; transform: translateY(28px); } }
     @keyframes slide { to   { transform: translateX(-50%); } }
 
@@ -773,20 +784,30 @@
         <button aria-pressed="false" data-f="brand">Brand identity</button>
         <button aria-pressed="false" data-f="ui">UI/UX</button>
         <button aria-pressed="false" data-f="social">Social and print</button>
+        <button aria-pressed="false" data-f="ad">Advertising</button>
+        <button aria-pressed="false" data-f="deck">Pitch decks</button>
+        <button aria-pressed="false" data-f="video">Video</button>
       </div>
 
       <div class="grid">
-        <article class="tile" data-c="brand"  style="--c:#124c7c"><img src="assets/work-k3b-diner.jpg" alt="K3B Diner identity" loading="lazy" onerror="this.remove()"><h3>K3B Diner identity</h3><p>Logo redesign and brand guidelines</p></article>
-        <article class="tile" data-c="ui"     style="--c:#287c98"><img src="assets/work-pca-services.jpg" alt="PCA Services" loading="lazy" onerror="this.remove()"><h3>PCA Services</h3><p>Web app for improved service access</p></article>
-        <article class="tile" data-c="ui"     style="--c:#2a9662"><img src="assets/work-ojt-tracking.jpg" alt="OJT Tracking" loading="lazy" onerror="this.remove()"><h3>OJT Tracking</h3><p>Web app for tracking on-the-job training</p></article>
-        <article class="tile" data-c="ui"     style="--c:#256252"><img src="assets/work-luckys-choice.jpg" alt="Lucky's Choice website" loading="lazy" onerror="this.remove()"><h3>Lucky's Choice website</h3><p>Single-page scrolling site</p></article>
-        <article class="tile" data-c="brand"  style="--c:#2a9662"><img src="assets/work-stationery.jpg" alt="Company stationery" loading="lazy" onerror="this.remove()"><h3>Company stationery</h3><p>Letterheads, IDs and templates</p></article>
-        <article class="tile" data-c="social" style="--c:#124c7c"><img src="assets/work-social-kits.jpg" alt="Social media kits" loading="lazy" onerror="this.remove()"><h3>Social media kits</h3><p>Posts, carousels and print pieces</p></article>
-      </div>
-
-      <div class="more">
-        <p>View my portfolio to see more.</p>
-        <div class="row"><a class="btn p" href="portfolio.html">View my portfolio</a><a class="btn" href="https://drive.google.com/file/d/1eqR3qM0lUh6WNAPvSzXyD1u3m6D4QU54/view?usp=drive_link" target="_blank" rel="noopener">Download PDF</a></div>
+        <article class="tile pg" data-c="brand" style="--c:#124c7c"><img src="assets/pf-graysongfx-branding.jpg" alt="Grayson.GFX" loading="lazy" onerror="this.remove()"><h3>Grayson.GFX</h3><p>Brand identity design</p></article>
+        <article class="tile pg" data-c="brand" style="--c:#287c98"><img src="assets/pf-anace-crochet.jpg" alt="Anace Crochet" loading="lazy" onerror="this.remove()"><h3>Anace Crochet</h3><p>Brand identity design</p></article>
+        <article class="tile pg" data-c="brand" style="--c:#2a9662"><img src="assets/pf-kabutesenso-identity.jpg" alt="KabuteSenso" loading="lazy" onerror="this.remove()"><h3>KabuteSenso</h3><p>Brand identity design</p></article>
+        <article class="tile pg" data-c="brand" style="--c:#256252"><img src="assets/pf-pca-brand-guidelines.jpg" alt="PCA brand guidelines" loading="lazy" onerror="this.remove()"><h3>PCA brand guidelines</h3><p>Philippine Coconut Authority</p></article>
+        <article class="tile pg" data-c="social" style="--c:#124c7c"><img src="assets/pf-sfiti-social-1.jpg" alt="SFITI social media" loading="lazy" onerror="this.remove()"><h3>SFITI social media</h3><p>Society of Future I.T. Innovators</p></article>
+        <article class="tile pg" data-c="social" style="--c:#287c98"><img src="assets/pf-sfiti-social-2.jpg" alt="SFITI social media" loading="lazy" onerror="this.remove()"><h3>SFITI social media</h3><p>Society of Future I.T. Innovators</p></article>
+        <article class="tile pg" data-c="social" style="--c:#2a9662"><img src="assets/pf-sfiti-social-3.jpg" alt="SFITI social media" loading="lazy" onerror="this.remove()"><h3>SFITI social media</h3><p>Society of Future I.T. Innovators</p></article>
+        <article class="tile pg" data-c="social" style="--c:#256252"><img src="assets/pf-sfiti-print.jpg" alt="SFITI print design" loading="lazy" onerror="this.remove()"><h3>SFITI print design</h3><p>Society of Future I.T. Innovators</p></article>
+        <article class="tile pg" data-c="social" style="--c:#124c7c"><img src="assets/pf-pca-print-social.jpg" alt="PCA print and social" loading="lazy" onerror="this.remove()"><h3>PCA print and social</h3><p>Philippine Coconut Authority</p></article>
+        <article class="tile pg" data-c="social" style="--c:#287c98"><img src="assets/pf-pca-newsletter.jpg" alt="PCA newsletter layout" loading="lazy" onerror="this.remove()"><h3>PCA newsletter layout</h3><p>Philippine Coconut Authority</p></article>
+        <article class="tile pg" data-c="social" style="--c:#2a9662"><img src="assets/pf-private-magazine.jpg" alt="Magazine layout" loading="lazy" onerror="this.remove()"><h3>Magazine layout</h3><p>Private clients</p></article>
+        <article class="tile pg" data-c="social" style="--c:#256252"><img src="assets/pf-private-print-social.jpg" alt="Print and social media" loading="lazy" onerror="this.remove()"><h3>Print and social media</h3><p>Private clients</p></article>
+        <article class="tile pg" data-c="ad" style="--c:#124c7c"><img src="assets/pf-kim3bee-advertising.jpg" alt="Kim3Bee Lucky’s ads" loading="lazy" onerror="this.remove()"><h3>Kim3Bee Lucky’s ads</h3><p>Advertising design</p></article>
+        <article class="tile pg" data-c="ad" style="--c:#287c98"><img src="assets/pf-bunene-advertising.jpg" alt="Bunene’s Spiced Vinegar" loading="lazy" onerror="this.remove()"><h3>Bunene’s Spiced Vinegar</h3><p>Advertising design</p></article>
+        <article class="tile pg" data-c="ui" style="--c:#2a9662"><img src="assets/pf-pca-mobile-website.jpg" alt="PCA mobile website" loading="lazy" onerror="this.remove()"><h3>PCA mobile website</h3><p>Philippine Coconut Authority</p></article>
+        <article class="tile pg" data-c="deck" style="--c:#256252"><img src="assets/pf-kabutesenso-pitch.jpg" alt="KabuteSenso pitch deck" loading="lazy" onerror="this.remove()"><h3>KabuteSenso pitch deck</h3><p>Startup</p></article>
+        <article class="tile pg" data-c="deck" style="--c:#124c7c"><img src="assets/pf-skilllink-pitch.jpg" alt="SkillLink pitch deck" loading="lazy" onerror="this.remove()"><h3>SkillLink pitch deck</h3><p>Startup</p></article>
+        <article class="tile pg" data-c="video" style="--c:#287c98"><img src="assets/pf-video-editing.jpg" alt="Video editing" loading="lazy" onerror="this.remove()"><h3>Video editing</h3><p>Trailers, promos and teasers</p></article>
       </div>
     </div>
   </section>
@@ -854,6 +875,14 @@
       <a href="#top">Back to top</a>
     </div>
   </footer>
+
+  <div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Work viewer">
+    <button class="x" id="lbx" aria-label="Close">✕</button>
+    <button class="pv" id="lbp" aria-label="Previous">‹</button>
+    <img id="lbi" alt="">
+    <div class="cap"><b id="lbt"></b><span id="lbs"></span></div>
+    <button class="nx" id="lbn" aria-label="Next">›</button>
+  </div>
 
   <script src="ratings.js?v=1"></script>
   <script>
@@ -931,6 +960,39 @@
         box.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
       });
       render(0);
+    })();
+
+    (function () {
+      var tiles = [].slice.call(document.querySelectorAll('.tile'));
+      var lb = document.getElementById('lb'), lbi = document.getElementById('lbi');
+      var lbt = document.getElementById('lbt'), lbs = document.getElementById('lbs');
+      var list = [], pos = 0;
+      function show() {
+        var t = list[pos], im = t.querySelector('img');
+        lbi.src = im.src; lbi.alt = im.alt;
+        lbt.textContent = t.querySelector('h3').textContent;
+        lbs.textContent = t.querySelector('p').textContent;
+      }
+      function step(d) { pos = (pos + d + list.length) % list.length; show(); }
+      function close() { lb.hidden = true; document.body.style.overflow = ''; }
+      tiles.forEach(function (t) {
+        t.addEventListener('click', function () {
+          if (!t.querySelector('img')) return;
+          list = tiles.filter(function (x) { return !x.hidden && x.querySelector('img'); });
+          pos = list.indexOf(t); show();
+          lb.hidden = false; document.body.style.overflow = 'hidden';
+        });
+      });
+      document.getElementById('lbx').addEventListener('click', close);
+      document.getElementById('lbp').addEventListener('click', function () { step(-1); });
+      document.getElementById('lbn').addEventListener('click', function () { step(1); });
+      lb.addEventListener('click', function (e) { if (e.target === lb) close(); });
+      document.addEventListener('keydown', function (e) {
+        if (lb.hidden) return;
+        if (e.key === 'Escape') close();
+        if (e.key === 'ArrowLeft') step(-1);
+        if (e.key === 'ArrowRight') step(1);
+      });
     })();
 
     (function () {
