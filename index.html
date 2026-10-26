@@ -686,7 +686,7 @@
         <div class="plan">
           <h3>Short</h3>
           <p class="d">1 to 4 minutes. Best for short films, trailers, reels and promos.</p>
-          <div class="now rng">₱3,000 to ₱4,000</div>
+          <div class="now rng"><span data-count="3000" data-prefix="₱">₱3,000</span> to <span data-count="4000" data-prefix="₱">₱4,000</span></div>
           <ul>
             <li>Cutting, pacing and transitions</li>
             <li>Music and sound sync</li>
@@ -697,7 +697,7 @@
         <div class="plan">
           <h3>Standard</h3>
           <p class="d">5 to 12 minutes. Best for documentary films and long-form content.</p>
-          <div class="now rng">₱5,000 to ₱6,000</div>
+          <div class="now rng"><span data-count="5000" data-prefix="₱">₱5,000</span> to <span data-count="6000" data-prefix="₱">₱6,000</span></div>
           <ul>
             <li>Everything in Short</li>
             <li>Story structure and narrative flow</li>
@@ -709,7 +709,7 @@
         <div class="plan">
           <h3>Long</h3>
           <p class="d">30 minutes to 1 hour. Events, full documentaries and recorded sessions.</p>
-          <div class="now rng">₱5,000 to ₱6,000</div>
+          <div class="now rng"><span data-count="5000" data-prefix="₱">₱5,000</span> to <span data-count="6000" data-prefix="₱">₱6,000</span></div>
           <ul>
             <li>For simple cut and drop edits</li>
             <li>Motion graphics and effects are discussed and quoted separately</li>
@@ -720,7 +720,7 @@
         <div class="plan">
           <h3>SDE</h3>
           <p class="d">Same day edit. You shoot, I edit and deliver on the day of your event.</p>
-          <div class="now rng">₱5,000 to ₱12,000</div>
+          <div class="now rng"><span data-count="5000" data-prefix="₱">₱5,000</span> to <span data-count="12000" data-prefix="₱">₱12,000</span></div>
           <ul>
             <li>Editing only, footage supplied by you or your videographer</li>
             <li>Edited and delivered the same day</li>
@@ -877,7 +877,7 @@
       var FIRST = 3, MORE = 10;
       var list = document.getElementById('rv-list');
       var data = (window.RATINGS || []).map(function (r) {
-        return { name: r.name, text: r.text, rating: Math.min(5, Math.max(0, parseFloat(r.rating) || 0)) };
+        return { name: r.name, text: r.text, rating: Math.min(5, Math.max(1, Math.round(parseFloat(r.rating) || 0))) };
       });
       if (!window.RATINGS) console.error('ratings.js did not load or has a syntax error (check commas between entries).');
       function esc(s) {
